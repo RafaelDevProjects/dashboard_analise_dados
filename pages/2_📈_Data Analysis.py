@@ -24,8 +24,8 @@ st.title("Análise do Mercado de E-commerce")
 
 st.sidebar.title("Sumário")
 st.sidebar.markdown("[1. Introdução ao Dataset](#introducao-ao-dataset)")
-st.sidebar.markdown("[2. Tipos de Variáveis](#tipos-de-variaveis)")
-st.sidebar.markdown("[3. Perguntas para Análise](#perguntas-de-analise)")
+st.sidebar.markdown("[2. Perguntas para Análise](#perguntas-de-analise)")
+st.sidebar.markdown("[3. Tipos de Variáveis](#tipos-de-variaveis)")
 st.sidebar.markdown("[4. Análise Estatística](#analise-estatistica)")
 st.sidebar.markdown("[5. Discusão sobre a distribuição dos dados](#distribuicao-dados)")
 st.sidebar.markdown("[6. Distribuições Probabilisticas](#distribuicao-probabilisticas)")
@@ -35,6 +35,19 @@ st.sidebar.markdown("[6. Distribuições Probabilisticas](#distribuicao-probabil
 # Apresentação do Dataset
 st.header("1. Introdução ao Dataset", anchor="introducao-ao-dataset")
 st.write("Este dataset contém informações sobre vendas realizadas no e-commerce Olist, abrangendo pedidos, produtos, clientes e vendedores. Nosso objetivo é explorar padrões de vendas, analisar correlações e entender o comportamento do mercado.")
+
+
+# Definição de perguntas de análise
+st.header("Principais perguntas para análise e respostas:", anchor="perguntas-de-analise")
+st.markdown("1. **Qual é a distribuição dos pedidos ao longo do tempo?**\n"
+            "   - Os pedidos se concentram em determinados períodos do ano?\n"
+            "2. **Qual é o ticket médio das compras?**\n"
+            "3. **Quais são as categorias de produtos mais vendidas?**\n"
+            "   - Algumas categorias têm maior volume de vendas do que outras?\n"
+            "4. **Existe correlação entre o valor do frete e o preço do produto?**\n"
+            "5. **Qual é o tempo médio de entrega dos pedidos?**\n"
+            "6. **Quais estados/cidades concentram o maior número de compras?**\n")
+
 
 st.subheader("Visualização das primeiras linhas do dataset:")
 
@@ -69,16 +82,6 @@ tipo_dados = {
     "UF_vendedor": "Qualitativa Nominal"
 }
 st.write(pd.DataFrame(tipo_dados.items(), columns=["Coluna", "Tipo de Dado"]))
-
-
-
-# Definição de perguntas de análise
-st.subheader("Principais perguntas para análise e respostas:", anchor="perguntas-de-analise")
-st.markdown("1. **Qual é a distribuição dos pedidos ao longo do tempo?**\n"
-            "   - Os pedidos se concentram em determinados períodos do ano?\n"
-            "   - Quais são as categorias de produtos mais vendidas?\n"
-            "   - Algumas categorias têm maior volume de vendas do que outras?\n")
-
 
 
 
@@ -161,6 +164,8 @@ df["year_month"] = df["data_de_compra"].dt.to_period("M")
 pedidos_por_mes = df.groupby("year_month").size()
 fig, ax = plt.subplots()
 pedidos_por_mes.plot(kind="line", ax=ax)
+
+
 ax.set_title("Evolução dos Pedidos ao Longo do Tempo")
 ax.set_xlabel("Ano-Mês")
 ax.set_ylabel("Quantidade de Pedidos")

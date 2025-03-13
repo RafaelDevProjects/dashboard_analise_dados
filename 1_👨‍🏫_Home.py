@@ -35,7 +35,14 @@ if selected == "Sobre Mim":
     st.write("Sou um desenvolvedor Full-stack apaixonado por tecnologia e inovação.")
     st.write("Tenho experiência com diversas linguagens e frameworks, sempre buscando resolver problemas complexos com soluções inteligentes.")
     st.write("Atualmente, curso Engenharia de Software na FIAP e desenvolvo projetos que combinam tecnologia e criatividade.")
+
+    st.header("Objetivo Profissional")
+    st.write("Busco uma oportunidade de estágio em Engenharia de Software para aplicar meus conhecimentos em desenvolvimento back-end e front-end, contribuindo com soluções inovadoras e eficientes. Tenho experiência em Java, Spring Boot, C#, .NET Core, Python, JavaScript e React, além de conhecimento em bancos de dados SQL e metodologias ágeis.")
+    st.write("Meu objetivo é integrar uma equipe dinâmica, onde possa aprimorar minhas habilidades técnicas, aprender com profissionais experientes e gerar impacto por meio da tecnologia. Tenho facilidade em trabalhar em equipe, sou proativo e gosto de desafios que envolvem inovação e otimização de processos.")
+
     st.success("🌐 Interessado em aprendizado de máquina, desenvolvimento sustentável e novas tecnologias.")
+
+
 
 elif selected == "Experiencia":
     st.header("Formação Acadêmica")
