@@ -1,112 +1,81 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 import streamlit as st
-from streamlit_option_menu import option_menu
-from PIL import Image
-import time
+from scipy.stats import norm, poisson, binom
 
-# Configuração da página
-st.set_page_config(page_title="Portfólio - Rafael Sigoli", layout="wide")
-
-# Carregar imagens
-octocat = Image.open("octocatRafael.png")
-
-# Criar menu lateral estilizado
-with st.sidebar:
-    selected = option_menu("Menu", ["Sobre Mim", "Experiencia", "Projetos", "Skills", "Contato"],
-                          icons=["person", "book", "code", "bar-chart", "envelope"],
-                          menu_icon="cast", default_index=0, styles={
-                              "container": {"padding": "5px"},
-                              "icon": {"color": "#f39c12", "font-size": "15px"},
-                              "nav-link": {"text-align": "left", "margin": "5px"},
-                              "nav-link-selected": {"background-color": "#f39c12"}
-                          })
-
-# Adicionando imagem de perfil
-col1, col2 = st.columns([1, 3])
-with col1:
-    st.image("octocatRafael.png", width=150)
-with col2:
-    st.title("Rafael de Almeida Sigoli")
-    st.subheader("Desenvolvedor Full-stack | Engenharia de Software")
-    st.markdown("[LinkedIn](https://www.linkedin.com/in/rafael-almeida-7660a6290/)")
-
-# Seções do portfólio
-if selected == "Sobre Mim":
-    st.header("Sobre Mim")
-    st.write("Sou um desenvolvedor Full-stack apaixonado por tecnologia e inovação.")
-    st.write("Tenho experiência com diversas linguagens e frameworks, sempre buscando resolver problemas complexos com soluções inteligentes.")
-    st.write("Atualmente, curso Engenharia de Software na FIAP e desenvolvo projetos que combinam tecnologia e criatividade.")
-
-    st.header("Objetivo Profissional")
-    st.write("Busco uma oportunidade de estágio em Engenharia de Software para aplicar meus conhecimentos em desenvolvimento back-end e front-end, contribuindo com soluções inovadoras e eficientes. Tenho experiência em Java, Spring Boot, C#, .NET Core, Python, JavaScript e React, além de conhecimento em bancos de dados SQL e metodologias ágeis.")
-    st.write("Meu objetivo é integrar uma equipe dinâmica, onde possa aprimorar minhas habilidades técnicas, aprender com profissionais experientes e gerar impacto por meio da tecnologia. Tenho facilidade em trabalhar em equipe, sou proativo e gosto de desafios que envolvem inovação e otimização de processos.")
-
-    st.success("🌐 Interessado em aprendizado de máquina, desenvolvimento sustentável e novas tecnologias.")
+# Carregar os arquivos CSV
+file_ocorrencias = 'indicadoressegurancapublicauf.xlsx'
+file_vitimas = "indicadoressegurancapublicamunic.xlsx"
+df_ocorrencias = pd.read_excel(file_ocorrencias, engine="openpyxl")  # Lendo o arquivo Excel
+df_vitimas = pd.read_excel(file_vitimas, engine="openpyxl")
 
 
-
-elif selected == "Experiencia":
-    st.header("Formação Acadêmica")
-    st.write("🎓 **Bacharelado em Engenharia de Software - FIAP**")
-    
-    st.header("Experiência Profissional")
-    expander = st.expander("🔹 Starbucks - Learning & Development")
-    expander.write("- Administração da plataforma self-learning\n- Tradução e criação de cursos\n- Desenvolvimento do curso 'Barista Treinador'")
-    
-    expander = st.expander("🔹 Projeto Goleiro 2D - FIAP")
-    expander.write("- Desenvolvimento de IA para goleiro automatizado\n- Uso de Arduino, Raspberry Pi e visão computacional")
-
-    expander = st.expander("🔹 Estágio Pekus | Desenvolvedor")
-    expander.write("- Desenvolvimento de aplicativos	mobile utilizando Android	Studio	(Java) e .NET	MAUI	(C#), garantindo uma experiencia luida para os usuarios.\n- Identificaçao e correçao de bugs, alem da realizaçao de testes para assegurar a estabilidade e funcionalidade das aplicaçoes.\n -  Colaboraçao na implementaçao de novas	funcionalidades e melhorias em diversos projetos mobile.\n Otimizaçao de performance	e	estrutura	de	código, aprimorando a eiciencia e a escalabilidade das aplicaçoes.\n -  Utilizaçao de Git	para versionamento de codigo e documentaçao de processos tecnicos para garantir a escalabilidade do projeto.")
-    
-elif selected == "Projetos":
-    st.header("Projetos Destacados")
-    col1, col2 = st.columns(2)
-    col3, col4 = st.columns(2)
-    
-    with col1:
-
-        st.subheader("App do Mecânico")
-        st.image("mecanico.png", width=100)
-        st.markdown("- Desenvolvimento de um aplicativo mobile para mecanicos que compram peças automotivas da Rede Ancora para revenda ou manutençao de veıculos.")
-        st.markdown("- Implementaçao do back-end	em Java com	Spring	Boot, seguindo uma arquitetura em camadas para maior organizaçao e escalabilidade.")
-        st.markdown("- Criaçao de APIs RESTful para integraçao futura com React Native")
-        st.markdown("- Implementaçao de JWT (JSON Web Token) para autenticaçao e controle de acesso seguro a dados sensıveis.")
-        st.markdown("-  Coniguraçao do banco de dados PostgreSQL, otimizando buscas e consultas de usuarios e historico de operaçoes.")
-
-        
-    with col2:
-        st.subheader("Plataforma ICR - USP")
-        st.image("instituto-da-crianca.jpg", width=300)
-        st.markdown("- Desenvolvimento de plataforma interativa para Hospital das Clínicas, com foco em acessibilidade para pais e entretenimento para crianças.")
-        st.markdown("- Apresentei o projeto na feira de tecnologia NEXT da FIAP, conquistando o segundo lugar pela inovação e impacto social da solução.")
-        st.markdown("- Desenvolvi o front-end com React, criando uma interface atraente e responsiva, resultando em umamelhoria de 70% na experiência do usuário.")
-        st.markdown("- Implementei o back-end com Java e Spring Boot, configurando APIs RESTful para conectar o frontend ao banco de dados de forma eficiente e segura.")
-        st.markdown("- Implementei MySQL para armazenar e gerenciar dados de usuários, facilitando o acesso e a consulta de informações importantes, aumentando a eficiência do processamento de dados em 40%.")
+# Streamlit - Interface do Dashboard
+st.title("Análise de ocorrencias criminais")
 
 
-    
-elif selected == "Skills":
-    st.header("Minhas Habilidades")
-    
-    st.subheader("Hard Skills")
-    st.write("- **Linguagens:** Java, Python, C#, JavaScript.")
-    st.write("- **Frameworks:** Spring Boot, .NET Core, React, Node.js, Angular.")
-    st.write("- **Banco de Dados:** MySQL, PostgreSQL, SQL Server, Oracle.")
-    st.write("- **Ferramentas:** Git/GitHub, Power BI, Excel.")
-    st.write("- **Metodologias:** Scrum, Kanban.")
-    
-    st.subheader("Soft Skills")
-    st.write("- Trabalho em equipe 🤝")
-    st.write("- Comunicação assertiva 🎙️")
-    st.write("- Resolução de problemas 🔍")
-    st.write("- Adaptabilidade 💡")
-    
-elif selected == "Contato":
-    st.header("Entre em Contato")
-    st.write("📧 E-mail: rafael.almeida.sigoli@gmail.com")
-    st.write("💼 [LinkedIn](https://www.linkedin.com/in/rafael-almeida-7660a6290/)")
-    st.write("🐙 [GitHub](https://github.com/RafaelDevProjects)")
-    
-# Animação de carregamento
-with st.spinner("Carregando mais informações..."):
-    time.sleep(1)
+# Apresentação do Dataset
+st.header("1. Introdução ao Dataset", anchor="introducao-ao-dataset")
+st.write("Os dados utilizados nesta análise foram extraídos das plataformas SinespJC e Sinesp Integração, desenvolvidas pelo governo federal para consolidar informações sobre segurança pública no Brasil. O SinespJC, criado em 2004, coleta dados de boletins de ocorrência das Polícias Civis, enquanto o Sinesp Integração, lançado em 2015, unifica informações de diferentes fontes para análises mais detalhadas. Os dados incluem registros de crimes como homicídio, furto e roubo de veículos, entre outros. Vale destacar que as informações são atualizadas periodicamente e podem sofrer revisões conforme a validação dos órgãos responsáveis.")
+
+
+# Definição de perguntas de análise
+st.sidebar.header("Perguntas para Análise de Dados")
+
+st.markdown("""
+## Perguntas para Análise de Dados
+
+### **Análise Temporal**
+1. Como a quantidade de ocorrências de cada tipo de crime variou ao longo dos anos?  
+2. Existe uma tendência de aumento ou diminuição de crimes específicos ao longo do tempo?  
+3. Quais meses do ano apresentam maior incidência de crimes?  
+
+### **Análise Geográfica**
+4. Quais estados apresentam o maior e o menor número de ocorrências criminais?  
+5. Como a distribuição de crimes varia entre as regiões do Brasil?  
+
+### **Análise por Tipo de Crime**
+6. Qual é o crime mais frequente registrado nos dados?  
+7. Algum tipo de crime apresenta variação sazonal ao longo do ano?  
+
+### **Análise de Vítimas**
+8. Há diferença entre o número de vítimas masculinas e femininas em cada tipo de crime?  
+9. Qual o tipo de crime que mais afeta vítimas do sexo feminino? E do sexo masculino?  
+10. Existe alguma relação entre a quantidade de ocorrências e o número de vítimas?  
+
+### **Intervalos de Confiança**
+11. Qual o intervalo de confiança de 95% para a média de homicídios nos últimos 5 anos?
+12. Qual o intervalo de confiança para a proporção de roubos de veículos em relação ao total de crimes?  
+14. Existe uma diferença significativa na média de crimes entre estados do Norte e do Sul?  
+
+### **Testes de Hipótese**
+14. A média de homicídios em São Paulo é significativamente maior do que no Rio de Janeiro?  
+15. A média de crimes varia entre diferentes regiões do Brasil?
+16. O tipo de crime mais frequente muda conforme o estado?
+17. Há uma relação significativa entre o sexo da vítima e o tipo de crime?  
+""")
+
+
+st.subheader("Visualização das primeiras linhas do dataset:")
+st.write("Visualização dos dados da tabela de ocorrências:")
+st.dataframe(df_ocorrencias.head())  # Exibir os dados na tela
+
+st.write("Visualização dos dados da tabela de vítimas:")
+st.dataframe(df_vitimas.head())  # Exibir os dados na tela
+
+
+# Identificação dos tipos de variáveis
+st.subheader("Tipos de variáveis no dataset:", anchor="tipos-de-variaveis")
+tipo_dados = {
+    "UF (Unidade Federativa)": "Qualitativo nominal",
+    "Tipo Crime": "Qualitativa Nominal",
+    "Ano": "Quantitativo discreto",
+    "Mês": "Qualitativo ordinal",
+    "Ocorrências": "Quantitativo discreto",
+    "Sexo da Vítima": "Qualitativo nominal",
+    "Vítimas": "Quantitativo discreto"
+}
+
+st.write(pd.DataFrame(tipo_dados.items(), columns=["Coluna", "Tipo de Dado"]))
