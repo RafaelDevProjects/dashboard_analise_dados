@@ -1,4 +1,4 @@
-streamlit
+streamlit 
 pandas
 numpy
 scipy
@@ -9,4 +9,10 @@ plotnine
 streamlit-option-menu
 streamlit-extras
 seaborn
+plotly.express
+folium 
+geopandas
+streamlit_autorefresh
+streamlit_folium
+ 
 
