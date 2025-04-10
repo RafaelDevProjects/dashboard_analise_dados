@@ -15,7 +15,7 @@ import plotly.express as px
 pages = st.sidebar.selectbox("Análise Exploratória de Crimes", ['Análise Exploratória de Crimes',
     "Análise Temporal",
     "Análise Geográfica [EM TESTE]",
-    "Correlações",
+    "Correlações [EM ANDAMENTO]",
     "Distribuição de Poisson [EM ANDAMENTO]",
     "Distribuição Normal [EM ANDAMENTO]",
 ])
