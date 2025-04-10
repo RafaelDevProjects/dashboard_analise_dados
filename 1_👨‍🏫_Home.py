@@ -12,57 +12,78 @@ df_ocorrencias = pd.read_excel(file_ocorrencias, engine="openpyxl")  # Lendo o a
 df_vitimas = pd.read_excel(file_vitimas, engine="openpyxl")
 
 
-# Streamlit - Interface do Dashboard
-st.title("Análise de ocorrencias criminais")
+# Título principal
+st.title("📊 Dashboard de Ocorrências Criminais no Brasil")
 
 
-# Apresentação do Dataset
-st.header("1. Introdução ao Dataset", anchor="introducao-ao-dataset")
-st.write("Os dados utilizados nesta análise foram extraídos das plataformas SinespJC e Sinesp Integração, desenvolvidas pelo governo federal para consolidar informações sobre segurança pública no Brasil. O SinespJC, criado em 2004, coleta dados de boletins de ocorrência das Polícias Civis, enquanto o Sinesp Integração, lançado em 2015, unifica informações de diferentes fontes para análises mais detalhadas. Os dados incluem registros de crimes como homicídio, furto e roubo de veículos, entre outros. Vale destacar que as informações são atualizadas periodicamente e podem sofrer revisões conforme a validação dos órgãos responsáveis.")
+# Lista de alunos e RMs
+dados_autores = [
+    {"Nome": "Rafael de Almeida Sigoli", "RM": 554019},
+    {"Nome": "Giovanna Franco Gaudino Rodrigues", "RM": 553701},
+    {"Nome": "Lucas Bertolassi Iori", "RM": 553183},
+    {"Nome": "Enzzo Monteiro Barros", "RM": 552616},
+    {"Nome": "Lucas Eduardo Garcia", "RM": 554070},
+    {"Nome": "Felipe Santana", "RM": 554259},
+    {"Nome": "Enzo Figueiredo Barbeli", "RM": 554272}
+]
 
+# Criar DataFrame e exibir como tabela
+df_autores = pd.DataFrame(dados_autores)
+st.subheader("👨‍💻 Integrantes do Projeto")
+st.table(df_autores)
 
-# Definição de perguntas de análise
-st.sidebar.header("Perguntas para Análise de Dados")
+# Introdução ao Dataset
+st.header("📁 1. Introdução aos Dados", anchor="introducao-ao-dataset")
+st.write("""
+🔍 Esta análise utiliza dados extraídos das plataformas **SinespJC** e **Sinesp Integração**, mantidas pelo Governo Federal.  
+📌 O **SinespJC** coleta boletins de ocorrência das Polícias Civis desde 2004.  
+📌 O **Sinesp Integração**, criado em 2015, unifica diversas fontes para uma visão mais ampla da segurança pública.  
+📅 Os dados incluem registros como **homicídios**, **furtos**, **roubos de veículos**, entre outros, e são atualizados periodicamente.
+""")
+
+# Perguntas de Análise
+st.sidebar.header("❓ Perguntas para Exploração de Dados")
 
 st.markdown("""
-## Perguntas para Análise de Dados
+## 🧠 Perguntas para Análise
 
-### **Análise Temporal**
-1. Como a quantidade de ocorrências de cada tipo de crime variou ao longo dos anos?  
-2. Existe uma tendência de aumento ou diminuição de crimes específicos ao longo do tempo?  
-3. Quais meses do ano apresentam maior incidência de crimes?  
+### 📆 Análise Temporal
+1. Como os crimes evoluíram ao longo dos anos?  
+2. Há uma tendência de aumento ou queda para crimes específicos?  
+3. Em quais meses ocorrem mais crimes?
 
-### **Análise Geográfica**
-4. Quais estados apresentam o maior e o menor número de ocorrências criminais?  
-5. Como a distribuição de crimes varia entre as regiões do Brasil?  
+### 🗺️ Análise Geográfica
+4. Quais estados têm os maiores e menores índices de criminalidade?  
+5. Como os crimes se distribuem pelas regiões do Brasil?
 
-### **Análise por Tipo de Crime**
-6. Qual é o crime mais frequente registrado nos dados?  
-7. Algum tipo de crime apresenta variação sazonal ao longo do ano?  
+### 🕵️ Análise por Tipo de Crime
+6. Qual crime aparece com mais frequência?  
+7. Existe variação sazonal em algum tipo de crime?
 
-### **Análise de Vítimas**
-8. Há diferença entre o número de vítimas masculinas e femininas em cada tipo de crime?  
-9. Qual o tipo de crime que mais afeta vítimas do sexo feminino? E do sexo masculino?  
-10. Existe alguma relação entre a quantidade de ocorrências e o número de vítimas?  
+### 👥 Análise de Vítimas
+8. Há diferença no número de vítimas entre homens e mulheres?  
+9. Quais crimes mais afetam cada sexo?  
+10. Há correlação entre número de ocorrências e número de vítimas?
 
-### **Intervalos de Confiança**
-11. Qual o intervalo de confiança de 95% para a média de homicídios nos últimos 5 anos?
-12. Qual o intervalo de confiança para a proporção de roubos de veículos em relação ao total de crimes?  
-14. Existe uma diferença significativa na média de crimes entre estados do Norte e do Sul?  
+### 📐 Intervalos de Confiança
+11. Qual o intervalo de confiança de 95% para a média de homicídios dos últimos 5 anos?  
+12. Qual o intervalo de confiança da proporção de roubos de veículos em relação ao total de crimes?  
+13. Existem diferenças significativas entre médias de crimes nas regiões Norte e Sul?
 
-### **Testes de Hipótese**
-14. A média de homicídios em São Paulo é significativamente maior do que no Rio de Janeiro?  
-15. A média de crimes varia entre diferentes regiões do Brasil?
-16. O tipo de crime mais frequente muda conforme o estado?
-17. Há uma relação significativa entre o sexo da vítima e o tipo de crime?  
+### ⚖️ Testes de Hipótese
+14. A média de homicídios em SP é maior do que no RJ?  
+15. Há diferenças entre as regiões em relação à média de crimes?  
+16. O crime mais comum muda conforme o estado?  
+17. Sexo da vítima está relacionado ao tipo de crime?
 """)
 
 
-st.subheader("Visualização das primeiras linhas do dataset:")
-st.write("Visualização dos dados da tabela de ocorrências:")
-st.dataframe(df_ocorrencias.head())  # Exibir os dados na tela
+# Visualização inicial dos dados
+st.subheader("👀 Visualização das Primeiras Linhas dos Dados")
+st.write("📄 Tabela de Ocorrências:")
+st.dataframe(df_ocorrencias.head())
 
-st.write("Visualização dos dados da tabela de vítimas:")
+st.write("📄 Tabela de Vítimas:")
 st.dataframe(df_vitimas.head())  # Exibir os dados na tela
 
 

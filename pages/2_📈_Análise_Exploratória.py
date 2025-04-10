@@ -14,10 +14,10 @@ import plotly.express as px
 
 pages = st.sidebar.selectbox("Análise Exploratória de Crimes", ['Análise Exploratória de Crimes',
     "Análise Temporal",
-    "Análise Geográfica",
+    "Análise Geográfica [EM TESTE]",
     "Correlações",
-    "Distribuição de Poisson",
-    "Distribuição Normal",
+    "Distribuição de Poisson [EM ANDAMENTO]",
+    "Distribuição Normal [EM ANDAMENTO]",
 ])
 
 def load_data(file_name):
@@ -128,61 +128,49 @@ if pages == "Análise Exploratória de Crimes":
         st.write('Aplicação criada com Streamlit')
         
 elif pages == "Análise Temporal":
-    def plot_general_time_series(df):
-        if 'Ano' in df.columns:
-            plt.figure(figsize=(12, 6))
-            for crime_type in df['Tipo Crime'].unique():
-                crime_data = df[df['Tipo Crime'] == crime_type]
-                crime_data_grouped = crime_data.groupby('Ano')['Ocorrências'].sum()
-                plt.plot(crime_data_grouped.index, crime_data_grouped.values, marker='o', label=crime_type)
-            plt.title('Tendência Temporal Geral dos Crimes')
-            plt.xlabel('Ano')
-            plt.ylabel('Ocorrências')
-            plt.legend()
-            plt.grid(True)
-            st.pyplot(plt)
-        else:
-            st.error("A coluna 'Ano' não foi encontrada no DataFrame.")
-
-    # Função para criar gráficos de linha para análise temporal
-    def plot_time_series(df, crime_type):
-        crime_data = df[df['Tipo Crime'] == crime_type]
-        if 'Ano' in crime_data.columns:
-            crime_data = crime_data.set_index('Ano')
-            plt.figure(figsize=(10, 5))
-            plt.plot(crime_data.index, crime_data['Ocorrências'], marker='o')
-            plt.title(f'Tendência Temporal de {crime_type}')
-            plt.xlabel('Ano')
-            plt.ylabel('Ocorrências')
-            plt.grid(True)
-            st.pyplot(plt)
-        else:
-            st.error("A coluna 'Ano' não foi encontrada no DataFrame.")
+    # Função para plotar dois crimes comparados no mesmo gráfico
+    def plot_compare_crimes(df, crime1, crime2, estado):
+        plt.figure(figsize=(12, 6))
+        for crime_type in [crime1, crime2]:
+            filtered_df = df[(df['Tipo Crime'] == crime_type) & (df['UF'] == estado)]
+            if 'Ano' in filtered_df.columns:
+                crime_data = filtered_df.groupby('Ano')['Ocorrências'].sum().reset_index()
+                plt.plot(crime_data['Ano'], crime_data['Ocorrências'], marker='o', label=crime_type)
+            else:
+                st.error("A coluna 'Ano' não foi encontrada no DataFrame.")
+        plt.title(f'Comparação Temporal: {crime1} vs {crime2} em {estado}')
+        plt.xlabel('Ano')
+        plt.ylabel('Ocorrências')
+        plt.legend()
+        plt.grid(True)
+        st.pyplot(plt)
 
     # Carregar os dados
     file_name = 'indicadoressegurancapublicauf.xlsx'
     df = load_data(file_name)
 
     if df is not None:
-        # Título da aplicação
         st.title('Análise Temporal dos Crimes')
 
-        # Plotar gráfico geral
-        st.subheader('Tendência Temporal Geral dos Crimes')
-        plot_general_time_series(df)
+        # Filtros
+        st.subheader('Selecione o estado e dois tipos de crime para comparação')
+        estados = sorted(df['UF'].unique())
+        crime_types = sorted(df['Tipo Crime'].unique())
 
-        # Criar um seletor para o tipo de crime
-        st.subheader('Tendência Temporal por Tipo de Crime')
-        crime_types = df['Tipo Crime'].unique()
-        selected_crime = st.selectbox('Selecione o tipo de crime', crime_types, key='time_series_selectbox')
+        selected_estado = st.selectbox('Selecione o estado (UF)', estados)
+        selected_crime1 = st.selectbox('Selecione o 1º tipo de crime', crime_types, key='crime1')
+        selected_crime2 = st.selectbox('Selecione o 2º tipo de crime', crime_types, key='crime2')
 
-        # Plotar gráfico de linha para o tipo de crime selecionado
-        plot_time_series(df, selected_crime)
+        # Evitar que o mesmo crime seja selecionado duas vezes
+        if selected_crime1 == selected_crime2:
+            st.warning("Por favor, selecione dois tipos de crime diferentes para comparação.")
+        else:
+            # Mostrar gráfico comparativo
+            st.subheader(f'Comparação entre {selected_crime1} e {selected_crime2} em {selected_estado}')
+            plot_compare_crimes(df, selected_crime1, selected_crime2, selected_estado)
 
-        # Rodapé
-        st.markdown('---')
-        st.write('Aplicação criada com Streamlit')
-        
+
+
 
 elif pages == "Análise Geográfica":
     
