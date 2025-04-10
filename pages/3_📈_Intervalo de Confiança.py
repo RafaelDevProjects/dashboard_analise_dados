@@ -34,7 +34,7 @@ st.header('📊 Intervalos de Confiança')
 for state, crimes in confidence_intervals.items():
     st.subheader(f"📍 Estado: {state}")
     for crime, ci in crimes.items():
-        st.write(f"🚨 **Crime:** {crime} | 📈 **Intervalo de Confiança:** {ci}")
+        st.write(f" **Crime:** {crime} | 📈 **Intervalo de Confiança:** {ci}")
 
 st.header('📉 Distribuição das Ocorrências de Crimes')
 
@@ -58,17 +58,17 @@ st.pyplot(plt)
 
 st.header('🧠 Análise dos Dados')
 st.write("""
-### 📌 Intervalos de Confiança
-📐 Os intervalos de confiança fornecem uma estimativa do intervalo onde a **média das ocorrências de crimes** provavelmente está, com **95% de certeza**.
+### Intervalos de Confiança
+Os intervalos de confiança fornecem uma estimativa do intervalo onde a **média das ocorrências de crimes** provavelmente está, com **95% de certeza**.
 
-### 📊 Distribuição das Ocorrências
-🧾 Os gráficos mostram como os crimes estão distribuídos nos estados selecionados, ajudando a detectar **padrões**, **picos** ou **anomalias** nas ocorrências.
+### Distribuição das Ocorrências
+Os gráficos mostram como os crimes estão distribuídos nos estados selecionados, ajudando a detectar **padrões**, **picos** ou **anomalias** nas ocorrências.
 """)
 
 # Análise detalhada SP x RJ
 st.header('⚖️ Análise Detalhada: SP x RJ')
 st.write("""
-📍 Esta análise compara os estados de **São Paulo** e **Rio de Janeiro** nos tipos de crimes selecionados. 
+Esta análise compara os estados de **São Paulo** e **Rio de Janeiro** nos tipos de crimes selecionados. 
 Os intervalos de confiança ajudam a interpretar se as diferenças são estatisticamente significativas.
 """)
 
@@ -82,7 +82,7 @@ for crime in selected_crimes:
     sp_ci = confidence_intervals['São Paulo'][crime]
     rj_ci = confidence_intervals['Rio de Janeiro'][crime]
     
-    st.subheader(f"🚨 Crime: {crime}")
+    st.subheader(f"Crime: {crime}")
     st.write(f"🔵 **São Paulo** - Média: {sp_mean:.2f}, IC: {sp_ci}")
     st.write(f"🔴 **Rio de Janeiro** - Média: {rj_mean:.2f}, IC: {rj_ci}")
     
