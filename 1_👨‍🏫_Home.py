@@ -41,8 +41,6 @@ st.write("""
 📅 Os dados incluem registros como **homicídios**, **furtos**, **roubos de veículos**, entre outros, e são atualizados periodicamente.
 """)
 
-# Perguntas de Análise
-st.sidebar.header("❓ Perguntas para Exploração de Dados")
 
 st.markdown("""
 ## 🧠 Perguntas para Análise
