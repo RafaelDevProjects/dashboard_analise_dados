@@ -36,6 +36,13 @@ for state, crimes in confidence_intervals.items():
     for crime, ci in crimes.items():
         st.write(f" **Crime:** {crime} | 📈 **Intervalo de Confiança:** {ci}")
 
+
+
+
+
+
+
+
 st.header('📉 Distribuição das Ocorrências de Crimes')
 
 # Filtros interativos
@@ -48,12 +55,37 @@ filtered_data_multiselect = df_uf_filtered[
     (df_uf_filtered['Tipo Crime'] == selected_crime)
 ]
 
-# Plotar gráfico
+# Cores para consistência
+palette = sns.color_palette('tab10', len(selected_states_multiselect))
+state_colors = dict(zip(selected_states_multiselect, palette))
+
+# Plotar histograma
 plt.figure(figsize=(10, 6))
-sns.histplot(data=filtered_data_multiselect, x='Ocorrências', kde=True, hue='UF')
+sns.histplot(data=filtered_data_multiselect, x='Ocorrências', kde=True, hue='UF', palette=state_colors)
+
+# Adicionar linhas verticais sem interferir na legenda
+for state in selected_states_multiselect:
+    data = df_uf_filtered[
+        (df_uf_filtered['UF'] == state) & 
+        (df_uf_filtered['Tipo Crime'] == selected_crime)
+    ]['Ocorrências']
+
+    mean = np.mean(data)
+    ci_lower, ci_upper = confidence_intervals[state][selected_crime]
+    color = state_colors[state]
+
+    # Linha de média (tracejada)
+    plt.axvline(mean, color=color, linestyle='--', linewidth=2)
+
+    # Linhas do intervalo de confiança (pontilhadas)
+    plt.axvline(ci_lower, color=color, linestyle=':', linewidth=1.5)
+    plt.axvline(ci_upper, color=color, linestyle=':', linewidth=1.5)
+
+# Legenda automática do histograma
 plt.title(f'📊 Distribuição das Ocorrências de {selected_crime}')
 plt.xlabel('Ocorrências')
 plt.ylabel('Frequência')
+plt.tight_layout()
 st.pyplot(plt)
 
 st.header('🧠 Análise dos Dados')
