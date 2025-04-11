@@ -34,7 +34,8 @@ st.header('📊 Intervalos de Confiança')
 for state, crimes in confidence_intervals.items():
     st.subheader(f"📍 Estado: {state}")
     for crime, ci in crimes.items():
-        st.write(f" **Crime:** {crime} | 📈 **Intervalo de Confiança:** {ci}")
+        ci_rounded = (int(round(ci[0], 0)), int(round(ci[1], 0)))
+        st.write(f" **Crime:** {crime} | 📈 **Intervalo de Confiança:** {ci_rounded}")
 
 
 
