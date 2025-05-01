@@ -35,7 +35,7 @@ st.table(df_autores)
 # Introdução ao Dataset
 st.header("📁 1. Introdução aos Dados", anchor="introducao-ao-dataset")
 st.write("""
-🔍 Esta análise utiliza dados extraídos das plataformas **SinespJC** e **Sinesp Integração**, mantidas pelo Governo Federal.  
+🔍 Esta análise utiliza dados extraídos das plataformas **SinespJC (Sistema Nacional de Estatística de Segurança Pública e Justiça Criminal)** e **Sinesp Integração (Sistema Nacional de Estatística de Segurança Pública)**, mantidas pelo Governo Federal.  
 📌 O **SinespJC** coleta boletins de ocorrência das Polícias Civis desde 2004.  
 📌 O **Sinesp Integração**, criado em 2015, unifica diversas fontes para uma visão mais ampla da segurança pública.  
 📅 Os dados incluem registros como **homicídios**, **furtos**, **roubos de veículos**, entre outros, e são atualizados periodicamente.

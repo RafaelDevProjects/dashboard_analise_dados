@@ -12,12 +12,13 @@ from streamlit_folium import folium_static
 import plotly.express as px
 
 
-pages = st.sidebar.selectbox("Análise Exploratória de Crimes", ['Análise Exploratória de Crimes',
+pages = st.sidebar.selectbox("Análise Exploratória de Crimes", [
+    'Análise Exploratória de Crimes',
     "Análise Temporal",
     "Análise Geográfica [EM TESTE]",
-    "Correlações [EM ANDAMENTO]",
-    "Distribuição de Poisson [EM ANDAMENTO]",
-    "Distribuição Normal [EM ANDAMENTO]",
+    #"Correlações [EM ANDAMENTO]",
+    #"Distribuição de Poisson [EM ANDAMENTO]",
+    #"Distribuição Normal [EM ANDAMENTO]",
 ])
 
 def load_data(file_name):
@@ -43,10 +44,10 @@ def calculate_central_tendency(df):
         results[crime_type] = {}
         for col in numeric_cols:
             try:
-                mean_val = crime_data[col].mean()
-                median_val = crime_data[col].median()
+                mean_val = int(round(crime_data[col].mean()))
+                median_val = int(round(crime_data[col].median()))
                 mode_val = crime_data[col].mode().iloc[0] if not crime_data[col].mode().empty else 'N/A'
-                std_dev = crime_data[col].std()
+                std_dev = int(round(crime_data[col].std()))
                 results[crime_type][col] = {'Mean': mean_val, 'Median': median_val, 'Mode': mode_val, 'Std Dev': std_dev}
             except Exception as e:
                 results[crime_type][col] = f"Erro ao calcular estatísticas: {e}"

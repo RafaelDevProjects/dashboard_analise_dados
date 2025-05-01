@@ -25,7 +25,7 @@ for state in selected_states:
         mean = np.mean(data)
         sem = stats.sem(data)
         ci = stats.t.interval(0.95, len(data)-1, loc=mean, scale=sem)
-        confidence_intervals[state][crime] = ci
+        confidence_intervals[state][crime] = (int(round(ci[0]))), int(round(ci[1]))
 
 # Interface Streamlit
 st.title('🔍 Análise de Dados de Segurança Pública')
